@@ -1,0 +1,26 @@
+skill,category
+python,programming
+c++,programming
+c#,programming
+.net,frameworks
+sql,databases
+excel,tools
+pandas,data_science
+power bi,tools
+ml,machine_learning
+scikit-learn,machine_learning
+fastapi,web
+docker,devops
+mlflow,devops
+deep learning,machine_learning
+llm,ai
+rag,ai
+apis,web
+nlp,nlp
+transformers,nlp
+hugging face,nlp
+spacy,nlp
+opencv,computer_vision
+cnn,computer_vision
+yolo,computer_vision
+pytorch,machine_learning
