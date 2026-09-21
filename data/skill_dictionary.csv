@@ -1,21 +1,39 @@
 skill,category
 python,programming
+java,programming
+javascript,programming
 c++,programming
 c#,programming
 .net,frameworks
 sql,databases
+nosql,databases
+mongodb,databases
 excel,tools
-pandas,data_science
 power bi,tools
+tableau,tools
+git,tools
+pandas,data_science
+numpy,data_science
+r,data_science
+statistics,data_science
 ml,machine_learning
 scikit-learn,machine_learning
-fastapi,web
-docker,devops
-mlflow,devops
 deep learning,machine_learning
+tensorflow,machine_learning
+keras,machine_learning
+pytorch,machine_learning
+fastapi,web
+apis,web
+rest api,web
+docker,devops
+kubernetes,devops
+mlflow,devops
+linux,devops
+aws,cloud
+azure,cloud
+gcp,cloud
 llm,ai
 rag,ai
-apis,web
 nlp,nlp
 transformers,nlp
 hugging face,nlp
@@ -23,4 +41,3 @@ spacy,nlp
 opencv,computer_vision
 cnn,computer_vision
 yolo,computer_vision
-pytorch,machine_learning

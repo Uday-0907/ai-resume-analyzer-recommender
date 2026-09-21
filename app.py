@@ -1,12 +1,16 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from dotenv import load_dotenv
 
 from text_cleaner import clean_text
 from resume_parser import parse_resume
 from skill_extractor import SkillExtractor
 from job_matcher import JobMatcher
 from roadmap_generator import analyze_skill_gaps, generate_learning_roadmap
+from ai_feedback import is_ai_feedback_available, generate_ai_feedback
+
+load_dotenv()
 
 st.set_page_config(
     page_title="AI Resume Analyzer & Job Recommender",
@@ -19,8 +23,12 @@ st.caption("Educational resume analysis tool focused on skills and project match
 
 # Responsible AI Notice (Module 12)
 st.info(
-    "🔒 **Responsible AI Statement:** This tool strictly evaluates technical skills and experience. "
-    "Personal attributes (gender, age, race, photos, etc.) are excluded from scoring."
+    "🔒 **Responsible AI Statement:** This tool is a guidance aid, not an automatic hiring or "
+    "rejection decision. It evaluates only job-related skills, education, projects, and relevant "
+    "experience. Personal attributes — gender, age, religion, nationality, photographs, marital "
+    "status, and disability — are never scored. Match scores are estimates to help you learn, "
+    "not recruiter decisions, and a missing keyword does not always mean missing ability. "
+    "Uploaded resumes are processed in memory only and are not stored."
 )
 
 # Sidebar Inputs
@@ -53,8 +61,8 @@ if uploaded_file is not None:
     extracted_skills = skill_data["all_skills"]
     categorized = skill_data["categorized_skills"]
     
-    # Calculate Recommendations
-    rankings = job_matcher.compute_match_scores(cleaned_resume)
+    # Calculate Recommendations (blends skill overlap + TF-IDF similarity)
+    rankings = job_matcher.compute_match_scores(cleaned_resume, extracted_skills)
     job_roles_list = [r["job_role"] for r in rankings]
     
     st.sidebar.header("2. Target Role Selection")
@@ -73,6 +81,11 @@ if uploaded_file is not None:
         st.metric(
             label=f"Match Score for {selected_role_name}",
             value=f"{target_info['match_score']}%"
+        )
+        st.caption(
+            f"Skill overlap: {target_info['skill_overlap_score']}% · "
+            f"Contextual similarity: {target_info['tfidf_score']}% "
+            "(blended 70/30 into the score above)"
         )
         
         st.write("**Extracted Skills by Category:**")
@@ -108,6 +121,23 @@ if uploaded_file is not None:
     for step in roadmap:
         st.markdown(f"- {step}")
 
+    # Optional Advanced Feature (PDF Section 13): LLM-generated feedback.
+    # Hidden entirely if no GEMINI_API_KEY is set — the app never requires it.
+    ai_feedback_text = None
+    if is_ai_feedback_available():
+        st.markdown("---")
+        st.subheader("🤖 AI-Generated Feedback (optional)")
+        if st.button("Generate personalized feedback"):
+            with st.spinner("Asking Gemini for feedback..."):
+                ai_feedback_text = generate_ai_feedback(
+                    target_role=selected_role_name,
+                    matching_skills=gap_analysis["matching_skills"],
+                    missing_skills=gap_analysis["missing_skills"],
+                    match_score=target_info["match_score"],
+                )
+            if ai_feedback_text:
+                st.write(ai_feedback_text)
+
     # Section for Report Download
     st.markdown("---")
     report_content = f"""AI RESUME ANALYSIS REPORT
@@ -120,6 +150,9 @@ Missing Skills: {', '.join(gap_analysis['missing_skills'])}
 
 RECOMMENDED LEARNING ROADMAP:
 """ + "\n".join(roadmap)
+
+    if ai_feedback_text:
+        report_content += f"\n\nAI-GENERATED FEEDBACK:\n{ai_feedback_text}"
 
     st.download_button(
         label="📥 Download Analysis Report",

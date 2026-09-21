@@ -1,5 +1,6 @@
-# .gitignore
 venv/
 __pycache__/
 *.pyc
 .DS_Store
+.env
+reports/*.txt
