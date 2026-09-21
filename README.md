@@ -89,8 +89,8 @@ signal from how the resume is written.
 ## Optional Advanced Feature: AI-Generated Feedback
 
 The PDF's "Optional Advanced Features" section mentions LLM-generated resume
-feedback. This is implemented in `ai_feedback.py` using **Gemini** (Google's
-model), and it is fully optional:
+feedback. This is implemented in `ai_feedback.py` using **Gemini 3.6 Flash**
+via Google's current `google-genai` SDK, and it is fully optional:
 
 - With no key set, the app works exactly as before — the AI feedback section
   simply doesn't appear.

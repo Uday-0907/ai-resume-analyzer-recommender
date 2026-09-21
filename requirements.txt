@@ -6,4 +6,4 @@ numpy
 scikit-learn
 plotly
 python-dotenv
-google-generativeai
+google-genai

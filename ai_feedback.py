@@ -63,18 +63,62 @@ the student. Rules:
 """
 
     try:
-        import google.generativeai as genai
-        from google.generativeai.types import RequestOptions
-        from google.api_core import retry as _retry
+        from google import genai
+        from google.genai import types, errors
 
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(
-            prompt,
-            request_options=RequestOptions(
-                timeout=15, retry=_retry.Retry(initial=1, maximum=5, multiplier=2, deadline=15)
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                http_options=types.HttpOptions(
+                    timeout=15_000,  # milliseconds
+                    retry_options=types.HttpRetryOptions(
+                        attempts=3,
+                        initial_delay=1.0,
+                        max_delay=5.0,
+                        http_status_codes=[429, 500, 502, 503, 504],
+                    ),
+                )
             ),
         )
-        return response.text.strip()
-    except Exception as exc:  # noqa: BLE001 - surface any failure to the UI, don't crash
+
+        text = (response.text or "").strip()
+        if not text:
+            # The call succeeded but returned nothing usable (e.g. the
+            # response was blocked by safety filters) — fail gracefully
+            # instead of showing an empty box.
+            return (
+                "⚠️ AI feedback unavailable right now (empty response). "
+                "Showing rule-based results only."
+            )
+        return text
+
+    except errors.ClientError as exc:
+        # 4xx: bad key, bad model name, quota exceeded, etc. Give a specific,
+        # actionable reason instead of a raw exception name.
+        if exc.code in (401, 403):
+            reason = "invalid or unauthorized API key"
+        elif exc.code == 404:
+            reason = "model not found — check the model name is current"
+        elif exc.code == 429:
+            reason = "rate limit or quota exceeded"
+        else:
+            reason = exc.message or "request rejected"
+        return f"⚠️ AI feedback unavailable right now ({reason}). Showing rule-based results only."
+
+    except errors.ServerError:
+        # 5xx: transient issue on Google's side, already retried above.
+        return (
+            "⚠️ AI feedback unavailable right now (Gemini is temporarily "
+            "unreachable). Showing rule-based results only."
+        )
+
+    except TimeoutError:
+        return (
+            "⚠️ AI feedback unavailable right now (request timed out). "
+            "Showing rule-based results only."
+        )
+
+    except Exception as exc:  # noqa: BLE001 - last-resort safety net, never crash the app
         return f"⚠️ AI feedback unavailable right now ({exc.__class__.__name__}). Showing rule-based results only."
