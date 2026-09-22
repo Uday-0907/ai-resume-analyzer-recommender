@@ -4,3 +4,8 @@ __pycache__/
 .DS_Store
 .env
 reports/*.txt
+reports/*.pdf
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage

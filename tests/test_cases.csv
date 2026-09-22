@@ -1,4 +1,4 @@
-test_resume,expected_top_role,actual_top_role,comments
-Resume A,Data Analyst,,
-Resume B,ML Engineer,,
-Resume C,NLP Engineer,,
+test_resume,expected_top_role,actual_top_role,notes
+resume_data_analyst.docx,Data Analyst,Data Analyst,Strong Python/SQL/Pandas/Power BI/Tableau/Statistics keywords
+resume_ml_engineer.docx,Machine Learning Engineer,Machine Learning Engineer,Strong PyTorch/scikit-learn/MLflow/Docker/FastAPI keywords
+resume_nlp_engineer.docx,NLP Engineer,NLP Engineer,Strong Transformers/Hugging Face/spaCy/BERT/RAG keywords

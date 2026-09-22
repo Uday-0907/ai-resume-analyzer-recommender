@@ -4,17 +4,28 @@ java,programming
 javascript,programming
 c++,programming
 c#,programming
+r,programming
+scala,programming
+go,programming
 .net,frameworks
+flask,frameworks
+django,frameworks
+react,frameworks
+node.js,frameworks
 sql,databases
 nosql,databases
 mongodb,databases
+postgresql,databases
+bigquery,databases
+redis,databases
 excel,tools
 power bi,tools
 tableau,tools
 git,tools
+selenium,tools
+junit,tools
 pandas,data_science
 numpy,data_science
-r,data_science
 statistics,data_science
 ml,machine_learning
 scikit-learn,machine_learning
@@ -22,18 +33,8 @@ deep learning,machine_learning
 tensorflow,machine_learning
 keras,machine_learning
 pytorch,machine_learning
-fastapi,web
-apis,web
-rest api,web
-docker,devops
-kubernetes,devops
-mlflow,devops
-linux,devops
-aws,cloud
-azure,cloud
-gcp,cloud
-llm,ai
-rag,ai
+bert,nlp
+gpt,nlp
 nlp,nlp
 transformers,nlp
 hugging face,nlp
@@ -41,3 +42,17 @@ spacy,nlp
 opencv,computer_vision
 cnn,computer_vision
 yolo,computer_vision
+fastapi,web
+apis,web
+rest api,web
+docker,devops
+kubernetes,devops
+mlflow,devops
+linux,devops
+airflow,devops
+spark,devops
+aws,cloud
+azure,cloud
+gcp,cloud
+llm,ai
+rag,ai

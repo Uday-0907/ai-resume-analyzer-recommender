@@ -1,0 +1,167 @@
+digraph ResumeAnalyzerPipeline {
+    // ── Graph-level settings ────────────────────────────────────────────────
+    graph [
+        label       = "AI Resume Analyzer & Job Recommendation System\nArchitecture"
+        labelloc    = "t"
+        fontname    = "Helvetica"
+        fontsize    = 18
+        bgcolor     = "white"
+        rankdir     = "TB"
+        splines     = "ortho"
+        nodesep     = 0.6
+        ranksep     = 0.8
+        pad         = 0.4
+    ]
+
+    node [
+        fontname    = "Helvetica"
+        fontsize    = 12
+        style       = "filled,rounded"
+        shape       = "box"
+    ]
+
+    edge [
+        fontname    = "Helvetica"
+        fontsize    = 10
+        color       = "#555555"
+        arrowsize   = 0.8
+    ]
+
+    // ── Subgraph: User Input ────────────────────────────────────────────────
+    subgraph cluster_input {
+        label       = "User Input"
+        style       = "dashed"
+        color       = "#4A90D9"
+        fontcolor   = "#4A90D9"
+        fontsize    = 13
+
+        USER        [label="👤 User\n(Browser)",        fillcolor="#D6E8FF", color="#4A90D9"]
+        UPLOAD      [label="📄 File Uploader\n(PDF / DOCX)\nMax 5 MB",
+                     fillcolor="#D6E8FF", color="#4A90D9"]
+    }
+
+    // ── Subgraph: Streamlit UI ──────────────────────────────────────────────
+    subgraph cluster_ui {
+        label       = "Streamlit Dashboard  (app.py)"
+        style       = "filled"
+        fillcolor   = "#F0F8FF"
+        color       = "#2c7bb6"
+        fontcolor   = "#2c7bb6"
+        fontsize    = 13
+
+        VALIDATION  [label="🛡️ File Validation\n(extension + size)",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        ROLE_SELECT [label="🎯 Target Role\nDropdown",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        GAUGE       [label="📊 Match Score\nGauge Chart",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        TOP3        [label="🏆 Top 3 Recommended\nRoles (metric cards)",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        SKILLS_UI   [label="🧠 Extracted Skills\n(by category)",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        GAP_UI      [label="🔍 Skill-Gap Display\n(Found vs. Missing)",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        ROADMAP_UI  [label="🗺️ 4-Week Roadmap\nDisplay",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        DOWNLOAD    [label="📥 Download Report\n(.txt)",
+                     fillcolor="#DDEEFF", color="#2c7bb6"]
+        RAI_BANNER  [label="🔒 Responsible AI\nBanner",
+                     fillcolor="#FFF0D6", color="#E07B00"]
+    }
+
+    // ── Subgraph: NLP Processing Pipeline ──────────────────────────────────
+    subgraph cluster_pipeline {
+        label       = "NLP Processing Pipeline"
+        style       = "filled"
+        fillcolor   = "#F5FFF5"
+        color       = "#27A65A"
+        fontcolor   = "#27A65A"
+        fontsize    = 13
+
+        PARSER      [label="📖 resume_parser.py\nPDF (pypdf)\nDOCX (python-docx)",
+                     fillcolor="#CCFFCC", color="#27A65A"]
+        CLEANER     [label="🧹 text_cleaner.py\nLowercase + strip symbols\nPreserve C++, C#, .NET",
+                     fillcolor="#CCFFCC", color="#27A65A"]
+        EXTRACTOR   [label="🔎 skill_extractor.py\nPhrase matching vs.\nskill_dictionary.csv",
+                     fillcolor="#CCFFCC", color="#27A65A"]
+        MATCHER     [label="⚖️ job_matcher.py\nTF-IDF Vectoriser\nCosine Similarity\n(70% skill + 30% TF-IDF)",
+                     fillcolor="#CCFFCC", color="#27A65A"]
+        ROADMAP     [label="🗺️ roadmap_generator.py\nSkill-Gap Analysis\n4-Week Learning Plan",
+                     fillcolor="#CCFFCC", color="#27A65A"]
+    }
+
+    // ── Subgraph: Data Layer ────────────────────────────────────────────────
+    subgraph cluster_data {
+        label       = "Data Layer"
+        style       = "filled"
+        fillcolor   = "#FFF5F5"
+        color       = "#C0392B"
+        fontcolor   = "#C0392B"
+        fontsize    = 13
+
+        SKILL_CSV   [label="📋 skill_dictionary.csv\n57 skills / 12 categories",
+                     shape="cylinder", fillcolor="#FFD6D6", color="#C0392B"]
+        ROLES_CSV   [label="📋 job_roles.csv\n8 job roles + descriptions",
+                     shape="cylinder", fillcolor="#FFD6D6", color="#C0392B"]
+    }
+
+    // ── Subgraph: Optional Feature ─────────────────────────────────────────
+    subgraph cluster_ai {
+        label       = "Optional AI Feedback  (ai_feedback.py)"
+        style       = "dashed"
+        color       = "#9B59B6"
+        fontcolor   = "#9B59B6"
+        fontsize    = 13
+
+        AI_MOD      [label="🤖 ai_feedback.py\nControlled prompt\n(skills only — no PII)",
+                     fillcolor="#EDD6FF", color="#9B59B6"]
+        GEMINI      [label="✨ Gemini Flash API\n(Google AI Studio)",
+                     fillcolor="#EDD6FF", color="#9B59B6", shape="ellipse"]
+    }
+
+    // ── Subgraph: Output ────────────────────────────────────────────────────
+    subgraph cluster_output {
+        label       = "Output"
+        style       = "dashed"
+        color       = "#7F8C8D"
+        fontcolor   = "#7F8C8D"
+        fontsize    = 13
+
+        REPORT      [label="📄 resume_analysis_*.txt\n(reports/ directory)",
+                     fillcolor="#EEEEEE", color="#7F8C8D"]
+    }
+
+    // ── Edges ───────────────────────────────────────────────────────────────
+    USER        -> UPLOAD       [label="Upload\nresume"]
+    UPLOAD      -> VALIDATION
+    VALIDATION  -> PARSER       [label="bytes\n(in-memory)"]
+
+    PARSER      -> CLEANER      [label="raw text"]
+    CLEANER     -> EXTRACTOR    [label="cleaned text"]
+    CLEANER     -> MATCHER      [label="cleaned text"]
+
+    SKILL_CSV   -> EXTRACTOR    [style="dashed", label="loads"]
+    ROLES_CSV   -> MATCHER      [style="dashed", label="loads"]
+
+    EXTRACTOR   -> MATCHER      [label="extracted\nskills"]
+    EXTRACTOR   -> SKILLS_UI    [label="categorized\nskills"]
+    MATCHER     -> ROLE_SELECT  [label="ranked roles"]
+    MATCHER     -> TOP3         [label="top 3 roles"]
+    MATCHER     -> GAUGE        [label="match score"]
+
+    ROLE_SELECT -> ROADMAP      [label="target role\n+ required skills"]
+    EXTRACTOR   -> ROADMAP      [label="found skills"]
+    ROADMAP     -> GAP_UI       [label="gap analysis"]
+    ROADMAP     -> ROADMAP_UI   [label="4-week plan"]
+
+    GAUGE       -> DOWNLOAD     [style="invis"]
+    GAP_UI      -> DOWNLOAD     [style="invis"]
+    ROADMAP_UI  -> DOWNLOAD
+    DOWNLOAD    -> REPORT       [label="export .txt"]
+
+    AI_MOD      -> GEMINI       [label="controlled\nprompt"]
+    GEMINI      -> AI_MOD       [label="feedback text", style="dashed"]
+    ROADMAP_UI  -> AI_MOD       [style="dashed", label="optional\ntrigger"]
+
+    RAI_BANNER  -> VALIDATION   [style="invis"]
+}
