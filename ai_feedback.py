@@ -9,6 +9,7 @@ This module is intentionally optional and safe-by-default:
   the target role, and the missing skills — never the raw resume text, and
   never any personal/identifying information. This keeps the feature aligned
   with the Responsible AI rules in Module 12 of the project brief.
+  
 """
 
 import os
