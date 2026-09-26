@@ -2,57 +2,82 @@ skill,category
 python,programming
 java,programming
 javascript,programming
+typescript,programming
 c++,programming
 c#,programming
+go,programming
+rust,programming
 r,programming
 scala,programming
-go,programming
-.net,frameworks
-flask,frameworks
-django,frameworks
-react,frameworks
-node.js,frameworks
+php,programming
+ruby,programming
+react,programming
+node.js,programming
+flask,programming
+django,programming
+fastapi,programming
+.net,programming
+apis,programming
+rest api,programming
 sql,databases
 nosql,databases
 mongodb,databases
 postgresql,databases
-bigquery,databases
+mysql,databases
 redis,databases
-excel,tools
-power bi,tools
-tableau,tools
-git,tools
-selenium,tools
-junit,tools
-pandas,data_science
-numpy,data_science
-statistics,data_science
-ml,machine_learning
-scikit-learn,machine_learning
-deep learning,machine_learning
-tensorflow,machine_learning
-keras,machine_learning
-pytorch,machine_learning
-bert,nlp
-gpt,nlp
-nlp,nlp
-transformers,nlp
-hugging face,nlp
-spacy,nlp
-opencv,computer_vision
-cnn,computer_vision
-yolo,computer_vision
-fastapi,web
-apis,web
-rest api,web
-docker,devops
-kubernetes,devops
-mlflow,devops
-linux,devops
-airflow,devops
-spark,devops
+bigquery,databases
+snowflake,databases
+sqlite,databases
+oracle,databases
+cassandra,databases
+dynamodb,databases
+ml,ml
+machine learning,ml
+deep learning,ml
+scikit-learn,ml
+pytorch,ml
+tensorflow,ml
+keras,ml
+nlp,ml
+transformers,ml
+hugging face,ml
+spacy,ml
+bert,ml
+gpt,ml
+llm,ml
+rag,ml
+opencv,ml
+cnn,ml
+yolo,ml
+computer vision,ml
+pandas,ml
+numpy,ml
+statistics,ml
+data analysis,ml
 aws,cloud
 azure,cloud
 gcp,cloud
-llm,ai
-rag,ai
+docker,cloud
+kubernetes,cloud
+linux,cloud
+airflow,cloud
+spark,cloud
+terraform,cloud
+ci/cd,cloud
+github actions,cloud
+jenkins,cloud
+ansible,cloud
+kafka,cloud
+git,tools
+github,tools
+gitlab,tools
+excel,tools
+power bi,tools
+tableau,tools
+jira,tools
+postman,tools
+selenium,tools
+junit,tools
+mlflow,tools
+figma,tools
+vscode,tools
